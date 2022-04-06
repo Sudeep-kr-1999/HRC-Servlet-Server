@@ -52,7 +52,8 @@ public class GetAllEntries extends HttpServlet {
 			String query="SELECT hrcdatabase.winter_internship.*,hrcdatabase.business.business_name,hrcdatabase.customer.name_customer "
 					+ "FROM ((hrcdatabase.winter_internship "
 					+ "INNER JOIN hrcdatabase.business ON winter_internship.business_code=business.business_code) "
-					+ "INNER JOIN hrcdatabase.customer ON winter_internship.cust_number=customer.cust_number) ORDER BY sl_no LIMIT 10 OFFSET "+pageparameter;
+					+ "INNER JOIN hrcdatabase.customer ON winter_internship.cust_number=customer.cust_number) ORDER BY sl_no"
+					+ " LIMIT 10 OFFSET "+pageparameter;
 			this.statement=connection.createStatement();
 			this.rs=this.statement.executeQuery(query);
 			while(rs.next()) {
