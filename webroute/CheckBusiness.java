@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import sudeep.servlet.hrcproject.database.DatabaseConnection;
 
 @WebServlet("/CheckBusiness")
@@ -41,8 +40,8 @@ public class CheckBusiness extends HttpServlet {
 
 	}
 
-	private Map<String, Integer> checkBusiness(JsonObject jsonData) throws SQLException {
-		String business_code = jsonData.get("business_code").toString();
+	private Map<String, Integer> checkBusiness(String businessCode) throws SQLException {
+		String business_code = businessCode;
 		Map<String, Integer> responseMap = new HashMap<String, Integer>();
 		try {
 			String query = "SELECT Count(*) AS count FROM hrcdatabase.business WHERE business_code=" + business_code;
@@ -66,10 +65,11 @@ public class CheckBusiness extends HttpServlet {
 
 	protected void doGet(HttpServletRequest serverrequest, HttpServletResponse serverresponse)
 			throws ServletException, IOException {
-		JsonObject data = new Gson().fromJson(serverrequest.getReader(), JsonObject.class);
+		String business_code = serverrequest.getParameter("business_code");
+		System.out.println(business_code);
 		Map<String, Integer> response = new HashMap<String, Integer>();
 		try {
-			response = this.checkBusiness(data);
+			response = this.checkBusiness(business_code);
 			serverresponse.setContentType("application/json");
 			serverresponse.setCharacterEncoding("UTF-8");
 			Gson gson = new Gson();

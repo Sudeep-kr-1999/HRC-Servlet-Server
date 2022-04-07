@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import sudeep.servlet.hrcproject.database.DatabaseConnection;
 
 @WebServlet("/CheckCustomer")
@@ -41,8 +40,8 @@ public class CheckCustomer extends HttpServlet {
 
 	}
 
-	private Map<String, Integer> checkCustomer(JsonObject jsonData) throws SQLException {
-		String cust_number = jsonData.get("cust_number").toString();
+	private Map<String, Integer> checkCustomer(String customerNumber) throws SQLException {
+		String cust_number = customerNumber;
 		Map<String, Integer> responseMap = new HashMap<String, Integer>();
 		try {
 			String query = "SELECT COUNT(*) AS count FROM hrcdatabase.customer WHERE cust_number=" + cust_number;
@@ -66,10 +65,10 @@ public class CheckCustomer extends HttpServlet {
 
 	protected void doGet(HttpServletRequest serverrequest, HttpServletResponse serverresponse)
 			throws ServletException, IOException {
-		JsonObject data = new Gson().fromJson(serverrequest.getReader(), JsonObject.class);
+		String customer_number = serverrequest.getParameter("cust_number");
 		Map<String, Integer> response = new HashMap<String, Integer>();
 		try {
-			response = this.checkCustomer(data);
+			response = this.checkCustomer(customer_number);
 			serverresponse.setContentType("application/json");
 			serverresponse.setCharacterEncoding("UTF-8");
 			Gson gson = new Gson();

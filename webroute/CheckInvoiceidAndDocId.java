@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import sudeep.servlet.hrcproject.database.DatabaseConnection;
 
 @WebServlet("/CheckInvoiceidAndDocId")
@@ -40,9 +39,9 @@ public class CheckInvoiceidAndDocId extends HttpServlet {
 		}
 	}
 
-	private Map<String, Integer> checkData(JsonObject jsonData) throws SQLException {
-		String doc_id = jsonData.get("doc_id").toString();
-		String invoice_id = jsonData.get("invoice_id").toString();
+	private Map<String, Integer> checkData(String docId, String invoiceId) throws SQLException {
+		String doc_id = docId;
+		String invoice_id = invoiceId;
 		Map<String, Integer> responseMap = new HashMap<String, Integer>();
 		try {
 			String query = "SELECT COUNT(*) AS count FROM hrcdatabase.winter_internship WHERE doc_id=" + doc_id
@@ -67,10 +66,11 @@ public class CheckInvoiceidAndDocId extends HttpServlet {
 
 	protected void doGet(HttpServletRequest serverrequest, HttpServletResponse serverresponse)
 			throws ServletException, IOException {
-		JsonObject data = new Gson().fromJson(serverrequest.getReader(), JsonObject.class);
+		String invoiceId = serverrequest.getParameter("invoice_id");
+		String docId = serverrequest.getParameter("doc_id");
 		Map<String, Integer> response = new HashMap<String, Integer>();
 		try {
-			response = this.checkData(data);
+			response = this.checkData(docId, invoiceId);
 			serverresponse.setContentType("application/json");
 			serverresponse.setCharacterEncoding("UTF-8");
 			Gson gson = new Gson();
