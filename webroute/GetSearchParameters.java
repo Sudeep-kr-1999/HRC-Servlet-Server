@@ -1,4 +1,5 @@
 package sudeep.servlet.hrcproject.webroute;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,11 +42,12 @@ public class GetSearchParameters extends HttpServlet {
 		}
 	}
 
-	private ArrayList<Map<String, String>> getSearchedData(JsonObject jsonData) throws SQLException {
-		String customer_id = jsonData.get("customer_number").toString();
-		String doc_id = jsonData.get("doc_id").toString();
-		String invoice_id = jsonData.get("invoice_id").toString();
-		String business_year = jsonData.get("business_year").toString();
+	private ArrayList<Map<String, String>> getSearchedData(String docid, String invoiceId, String customerNumber,
+			String businessYear) throws SQLException {
+		String customer_id = customerNumber;
+		String doc_id = docid;
+		String invoice_id = invoiceId;
+		String business_year = businessYear;
 		ArrayList<Map<String, String>> invoiceList = new ArrayList<Map<String, String>>();
 		try {
 			String queryString = "SELECT hrcdatabase.winter_internship.sl_no,"
@@ -98,8 +100,12 @@ public class GetSearchParameters extends HttpServlet {
 			throws ServletException, IOException {
 		ArrayList<Map<String, String>> response = new ArrayList<Map<String, String>>();
 		try {
-			JsonObject data = new Gson().fromJson(serverrequest.getReader(), JsonObject.class);
-			response = this.getSearchedData(data);
+			String doc_id = serverrequest.getParameter("doc_id");
+			String invoice_id = serverrequest.getParameter("invoice_id");
+			String customer_number = serverrequest.getParameter("customer_number");
+			String business_year = serverrequest.getParameter("business_year");
+
+			response = this.getSearchedData(doc_id, invoice_id, customer_number, business_year);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

@@ -66,7 +66,6 @@ public class CheckBusiness extends HttpServlet {
 	protected void doGet(HttpServletRequest serverrequest, HttpServletResponse serverresponse)
 			throws ServletException, IOException {
 		String business_code = serverrequest.getParameter("business_code");
-		System.out.println(business_code);
 		Map<String, Integer> response = new HashMap<String, Integer>();
 		try {
 			response = this.checkBusiness(business_code);
