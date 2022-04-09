@@ -1,4 +1,5 @@
 package sudeep.servlet.hrcproject.webroute;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -40,7 +41,7 @@ public class GetSearchCustomerId extends HttpServlet {
 	}
 
 	private ArrayList<Map<String, String>> getSearchedData(String customerID, String pageparams) throws SQLException {
-		String customer_id = customerID;
+		String customer_id =customerID;
 		int page = Integer.parseInt(pageparams);
 		String pageparameter = Integer.toString((page - 1) * 10);
 		ArrayList<Map<String, String>> invoiceList = new ArrayList<Map<String, String>>();
@@ -56,8 +57,8 @@ public class GetSearchCustomerId extends HttpServlet {
 					+ " hrcdatabase.winter_internship.baseline_create_date,"
 					+ " hrcdatabase.winter_internship.cust_payment_terms,"
 					+ " hrcdatabase.winter_internship.invoice_id FROM hrcdatabase.winter_internship WHERE "
-					+ "hrcdatabase.winter_internship.cust_number=" + customer_id + "ORDER BY sl_no LIMIT 10 OFFSET "
-					+ pageparameter;
+					+ "hrcdatabase.winter_internship.cust_number LIKE \"" +customer_id + "%\" "
+					+ "ORDER BY sl_no LIMIT 10 OFFSET " + pageparameter;
 			this.statement = connection.createStatement();
 			this.rs = this.statement.executeQuery(queryString);
 			while (rs.next()) {
@@ -95,7 +96,7 @@ public class GetSearchCustomerId extends HttpServlet {
 		ArrayList<Map<String, String>> response = new ArrayList<Map<String, String>>();
 		try {
 			String pageparams = serverrequest.getParameter("page");
-			String customerID=serverrequest.getParameter("customer_number");
+			String customerID = serverrequest.getParameter("customer_number");
 			response = this.getSearchedData(customerID, pageparams);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
