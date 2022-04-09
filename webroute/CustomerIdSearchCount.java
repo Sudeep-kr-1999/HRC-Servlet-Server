@@ -8,16 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import sudeep.servlet.hrcproject.database.DatabaseConnection;
 
 @WebServlet("/CustomerIdSearchCount")
@@ -44,9 +40,9 @@ public class CustomerIdSearchCount extends HttpServlet {
 
 	}
 
-	private Map<String, Integer> getCount(JsonObject jsonData) throws SQLException {
+	private Map<String, Integer> getCount(String customerID) throws SQLException {
 		Map<String, Integer> responseMap = new HashMap<String, Integer>();
-		String customer_id = jsonData.get("customer_number").toString();
+		String customer_id = customerID;
 		try {
 			String query = "SELECT Count(*) AS count FROM hrcdatabase.winter_internship WHERE hrcdatabase.winter_internship.cust_number="
 					+ customer_id;
@@ -68,8 +64,8 @@ public class CustomerIdSearchCount extends HttpServlet {
 			throws ServletException, IOException {
 		Map<String, Integer> response = new HashMap<String, Integer>();
 		try {
-			JsonObject data = new Gson().fromJson(serverrequest.getReader(), JsonObject.class);
-			response = this.getCount(data);
+			String customerID = serverrequest.getParameter("customer_number");
+			response = this.getCount(customerID);
 			serverresponse.setContentType("application/json");
 			serverresponse.setCharacterEncoding("UTF-8");
 			Gson gson = new Gson();

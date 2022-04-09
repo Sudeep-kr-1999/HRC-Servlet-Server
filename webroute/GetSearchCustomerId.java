@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import sudeep.servlet.hrcproject.database.DatabaseConnection;
 import sudeep.servlet.hrcproject.model.InvoiceUI;
 
@@ -40,8 +39,8 @@ public class GetSearchCustomerId extends HttpServlet {
 		}
 	}
 
-	private ArrayList<Map<String, String>> getSearchedData(JsonObject jsonData, String pageparams) throws SQLException {
-		String customer_id = jsonData.get("customer_number").toString();
+	private ArrayList<Map<String, String>> getSearchedData(String customerID, String pageparams) throws SQLException {
+		String customer_id = customerID;
 		int page = Integer.parseInt(pageparams);
 		String pageparameter = Integer.toString((page - 1) * 10);
 		ArrayList<Map<String, String>> invoiceList = new ArrayList<Map<String, String>>();
@@ -96,8 +95,8 @@ public class GetSearchCustomerId extends HttpServlet {
 		ArrayList<Map<String, String>> response = new ArrayList<Map<String, String>>();
 		try {
 			String pageparams = serverrequest.getParameter("page");
-			JsonObject data = new Gson().fromJson(serverrequest.getReader(), JsonObject.class);
-			response = this.getSearchedData(data, pageparams);
+			String customerID=serverrequest.getParameter("customer_number");
+			response = this.getSearchedData(customerID, pageparams);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
