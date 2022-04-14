@@ -58,9 +58,10 @@ public class GetAllUiDetails extends HttpServlet {
 					+ " hrcdatabase.winter_internship.total_open_amount,"
 					+ " hrcdatabase.winter_internship.baseline_create_date,"
 					+ " hrcdatabase.winter_internship.cust_payment_terms,"
-					+ "	hrcdatabase.winter_internship.aging_bucket ,"
-					+ " hrcdatabase.winter_internship.invoice_id FROM hrcdatabase.winter_internship ORDER BY sl_no LIMIT 10 OFFSET "
-					+ pageparameter;
+					+ "	hrcdatabase.winter_internship.aging_bucket ," + " hrcdatabase.winter_internship.invoice_id ,"
+					+ "hrcdatabase.customer.name_customer " + "FROM hrcdatabase.winter_internship "
+					+ "INNER JOIN hrcdatabase.customer ON winter_internship.cust_number=customer.cust_number ORDER BY sl_no"
+					+ " LIMIT 10 OFFSET " + pageparameter;
 			this.statement = connection.createStatement();
 			this.rs = this.statement.executeQuery(query);
 			while (rs.next()) {
@@ -82,6 +83,7 @@ public class GetAllUiDetails extends HttpServlet {
 				modelrow.setCustomerPaymentTerms(rs.getString("cust_payment_terms"));
 				modelrow.setInvoiceID(rs.getString("invoice_id"));
 				modelrow.setAgingBucket(rs.getString("aging_bucket") == null ? "" : rs.getString("aging_bucket"));
+				modelrow.setNameCustomer(rs.getString("name_customer"));
 				invoiceList.add(modelrow.invoiceListMap());
 			}
 
