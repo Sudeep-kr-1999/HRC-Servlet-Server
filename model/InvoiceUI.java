@@ -20,6 +20,11 @@ public class InvoiceUI {
 	private String baseline_create_date;
 	private String cust_payment_terms;
 	private String invoice_id;
+	private String aging_bucket;
+	
+	public void setAgingBucket(String value) {
+		this.aging_bucket=value;
+	}
 
 	public void setSlNumber(String slNumber) {
 		this.sl_no = slNumber;
@@ -103,6 +108,7 @@ public class InvoiceUI {
 		mapUI.put("baseline_create_date", this.baseline_create_date);
 		mapUI.put("cust_payment_terms", this.cust_payment_terms);
 		mapUI.put("invoice_id", this.invoice_id);
+		mapUI.put("aging_bucket", this.aging_bucket);
 		return mapUI;
 		
 	}

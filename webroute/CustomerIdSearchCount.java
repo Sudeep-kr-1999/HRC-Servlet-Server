@@ -43,9 +43,10 @@ public class CustomerIdSearchCount extends HttpServlet {
 	private Map<String, Integer> getCount(String customerID) throws SQLException {
 		Map<String, Integer> responseMap = new HashMap<String, Integer>();
 		String customer_id = customerID;
+		String likeExpression = "\"" + customer_id + "%" + "\"";
 		try {
-			String query = "SELECT Count(*) AS count FROM hrcdatabase.winter_internship WHERE hrcdatabase.winter_internship.cust_number LIKE \""
-					+ customer_id + "%\" ";
+			String query = "SELECT Count(*) AS count FROM hrcdatabase.winter_internship WHERE hrcdatabase.winter_internship.cust_number LIKE"
+					+ likeExpression;
 			this.statement = connection.createStatement();
 			this.rs = this.statement.executeQuery(query);
 			while (rs.next()) {
